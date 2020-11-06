@@ -1,5 +1,6 @@
 import React from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 export const GET_TODOS_QUERY = gql`
   query getTodos {

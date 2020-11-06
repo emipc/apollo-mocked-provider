@@ -1,12 +1,9 @@
 import * as React from 'react';
-import {
-  ApolloLink,
-  Observable,
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  ApolloCache,
-} from '@apollo/client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink, Observable } from 'apollo-link';
+import { ApolloCache } from 'apollo-cache';
+import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
 import { GraphQLError } from 'graphql';
 import { ApolloMockedProviderOptions } from './ApolloMockedProviderOptions';
 

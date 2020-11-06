@@ -1,17 +1,15 @@
 import React, { ReactNode } from 'react';
-import { addMocksToSchema } from '@graphql-tools/mock';
-import { makeExecutableSchema } from '@graphql-tools/schema';
 import { ApolloMockedProviderOptions } from './ApolloMockedProviderOptions';
+import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
+import { ApolloProvider } from 'react-apollo';
+import { SchemaLink } from 'apollo-link-schema';
 import {
-  ApolloCache,
-  InMemoryCache,
-  ApolloClient,
-  ApolloLink,
-  ApolloProvider,
-} from '@apollo/client';
-import { SchemaLink } from '@apollo/client/link/schema';
-import { onError } from '@apollo/client/link/error';
-import { ITypeDefinitions } from '@graphql-tools/utils';
+  makeExecutableSchema,
+  addMockFunctionsToSchema,
+  ITypeDefinitions,
+} from 'graphql-tools';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 export const createApolloMockedProvider = (
   typeDefs: ITypeDefinitions,
@@ -23,31 +21,24 @@ export const createApolloMockedProvider = (
 }: {
   customResolvers?: any;
   children: ReactNode;
-  cache?: ApolloCache<any>;
+  cache?: any;
 }) => {
   // const mocks = mergeResolvers(globalMocks, props.customResolvers);
 
-  const baseSchema = makeExecutableSchema({
+  const schema = makeExecutableSchema({
     typeDefs,
     resolverValidationOptions: { requireResolversForResolveType: false },
   });
 
-  const schema = addMocksToSchema({
-    schema: baseSchema,
-    mocks: customResolvers,
-  });
+  addMockFunctionsToSchema({ schema, mocks: customResolvers });
 
   const cache = componentCache || globalCache || new InMemoryCache();
 
   const customLinks = links ? links({ cache, schema }) : [];
 
   const client = new ApolloClient({
-    link: ApolloLink.from([
-      onError(() => {}),
-      ...customLinks,
-      new SchemaLink({ schema }),
-    ]),
     cache,
+    link: ApolloLink.from([...customLinks, new SchemaLink({ schema })]),
     defaultOptions: {
       mutate: { errorPolicy: 'all' },
     },

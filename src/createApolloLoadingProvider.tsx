@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { ApolloMockedProviderOptions } from './ApolloMockedProviderOptions';
-import {
-  ApolloCache,
-  ApolloLink,
-  Observable,
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-} from '@apollo/client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink, Observable } from 'apollo-link';
+import { ApolloCache } from 'apollo-cache';
+import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
 
 export const createApolloLoadingProvider = ({
   cache: globalCache,

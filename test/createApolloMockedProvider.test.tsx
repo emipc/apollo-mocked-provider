@@ -9,7 +9,8 @@ import {
 } from '@testing-library/react';
 import { GET_TODOS_QUERY, TodoApp, TodoItem, TodoList } from './fixtures/Todo';
 import path from 'path';
-import { InMemoryCache, ApolloLink } from '@apollo/client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink } from 'apollo-link';
 
 const typeDefs = readFileSync(
   path.join(__dirname, 'fixtures/simpleSchema.graphql'),

@@ -1,4 +1,5 @@
-import { ApolloCache, ApolloLink } from '@apollo/client';
+import { ApolloLink } from 'apollo-link';
+import { ApolloCache } from 'apollo-cache';
 import { GraphQLSchema } from 'graphql';
 
 export interface LinksArgs {
