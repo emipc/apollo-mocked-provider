@@ -9,14 +9,16 @@ import {
   addMockFunctionsToSchema,
   ITypeDefinitions,
 } from 'graphql-tools';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from 'apollo-cache-inmemory';
 
 export const createApolloMockedProvider = (
   typeDefs: ITypeDefinitions,
-  { cache: globalCache, links, globalMocks }: ApolloMockedProviderOptions = {}
+  { links, globalMocks, fragmentTypes }: ApolloMockedProviderOptions = {}
 ) => ({
   customResolvers = {},
-  cache: componentCache,
   children,
 }: {
   customResolvers?: any;
@@ -33,7 +35,13 @@ export const createApolloMockedProvider = (
     mocks: { ...globalMocks, ...customResolvers },
   });
 
-  const cache = componentCache || globalCache || new InMemoryCache();
+  const cache = fragmentTypes
+    ? new InMemoryCache({
+        fragmentMatcher: new IntrospectionFragmentMatcher({
+          introspectionQueryResultData: fragmentTypes,
+        }),
+      })
+    : new InMemoryCache();
 
   const customLinks = links ? links({ cache, schema }) : [];
 
