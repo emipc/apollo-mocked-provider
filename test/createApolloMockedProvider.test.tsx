@@ -58,6 +58,33 @@ test('works with custom resolvers', async () => {
   expect(getByText('Second Todo')).toBeTruthy();
 });
 
+test('works with custom global mocks', async () => {
+  const globalMocks = {
+    Query: () => ({
+      todos: () => [
+        {
+          text: 'First Todo',
+        },
+        {
+          text: 'Second Todo',
+        },
+      ],
+    }),
+  };
+
+  const MockedProvider = createApolloMockedProvider(typeDefs, { globalMocks });
+  const { getByText } = render(
+    <MockedProvider>
+      <TodoApp />
+    </MockedProvider>
+  );
+
+  await waitForDomChange();
+
+  expect(getByText('First Todo')).toBeTruthy();
+  expect(getByText('Second Todo')).toBeTruthy();
+});
+
 test('works with custom links', async () => {
   const linkAction = jest.fn();
 

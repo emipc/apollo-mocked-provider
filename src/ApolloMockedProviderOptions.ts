@@ -10,4 +10,5 @@ export interface LinksArgs {
 export interface ApolloMockedProviderOptions {
   cache?: ApolloCache<any>;
   links?: (args: LinksArgs) => Array<ApolloLink>;
+  globalMocks?: any;
 }

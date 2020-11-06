@@ -13,7 +13,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 
 export const createApolloMockedProvider = (
   typeDefs: ITypeDefinitions,
-  { cache: globalCache, links }: ApolloMockedProviderOptions = {}
+  { cache: globalCache, links, globalMocks }: ApolloMockedProviderOptions = {}
 ) => ({
   customResolvers = {},
   cache: componentCache,
@@ -23,14 +23,15 @@ export const createApolloMockedProvider = (
   children: ReactNode;
   cache?: any;
 }) => {
-  // const mocks = mergeResolvers(globalMocks, props.customResolvers);
-
   const schema = makeExecutableSchema({
     typeDefs,
     resolverValidationOptions: { requireResolversForResolveType: false },
   });
 
-  addMockFunctionsToSchema({ schema, mocks: customResolvers });
+  addMockFunctionsToSchema({
+    schema,
+    mocks: { ...globalMocks, ...customResolvers },
+  });
 
   const cache = componentCache || globalCache || new InMemoryCache();
 
