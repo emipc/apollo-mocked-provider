@@ -1,5 +1,7 @@
-import { ApolloCache, ApolloLink } from '@apollo/client';
+import { ApolloLink } from 'apollo-link';
+import { ApolloCache } from 'apollo-cache';
 import { GraphQLSchema } from 'graphql';
+import { IntrospectionResultData } from 'apollo-cache-inmemory';
 
 export interface LinksArgs {
   cache: ApolloCache<any>;
@@ -7,6 +9,7 @@ export interface LinksArgs {
 }
 
 export interface ApolloMockedProviderOptions {
-  cache?: ApolloCache<any>;
   links?: (args: LinksArgs) => Array<ApolloLink>;
+  globalMocks?: any;
+  fragmentTypes?: IntrospectionResultData;
 }
